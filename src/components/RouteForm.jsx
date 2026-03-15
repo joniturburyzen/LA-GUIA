@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useLayoutEffect } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { debounceAutocomplete, getPlaceCoords } from '../services/geocoding.js'
 import { formatDistance, formatDuration } from '../services/routing.js'
@@ -12,27 +12,6 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
   const inputRefs = useRef({})
   const [dropPos, setDropPos] = useState(null)
 
-  // Recalculate dropdown position after every commit + when visual viewport changes
-  // (mobile keyboard open/close shifts the visual viewport vs layout viewport)
-  useLayoutEffect(() => {
-    function calc() {
-      if (!activeInput) { setDropPos(null); return }
-      const el = inputRefs.current[activeInput]
-      if (!el) { setDropPos(null); return }
-      const rect = el.getBoundingClientRect()
-      const vvTop  = window.visualViewport?.offsetTop  ?? 0
-      const vvLeft = window.visualViewport?.offsetLeft ?? 0
-      setDropPos({ top: rect.bottom - vvTop + 3, left: rect.left - vvLeft, width: rect.width })
-    }
-    calc()
-    window.visualViewport?.addEventListener('resize', calc)
-    window.visualViewport?.addEventListener('scroll', calc)
-    return () => {
-      window.visualViewport?.removeEventListener('resize', calc)
-      window.visualViewport?.removeEventListener('scroll', calc)
-    }
-  }, [activeInput])
-
   const canGenerate = waypoints.filter(w => w.lat && w.lng).length >= 2
 
   const handleInput = useCallback((id, value) => {
@@ -42,6 +21,11 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
   }, [waypoints, onWaypointsChange])
 
   const handleFocus = useCallback((id) => {
+    const el = inputRefs.current[id]
+    if (el) {
+      const r = el.getBoundingClientRect()
+      setDropPos({ top: r.bottom + 3, left: r.left, width: r.width })
+    }
     setActiveInput(id)
   }, [])
 
