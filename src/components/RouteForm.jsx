@@ -15,14 +15,6 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
   const canGenerate = waypoints.filter(w => w.lat && w.lng).length >= 2
 
   const handleInput = useCallback((id, value) => {
-    // Re-assert active input + position on every keystroke (fixes first-type bug on mobile
-    // where keyboard open triggers blur/focus cycle that clears activeInput before suggestions arrive)
-    setActiveInput(id)
-    const el = inputRefs.current[id]
-    if (el) {
-      const rect = el.getBoundingClientRect()
-      setDropPos({ top: rect.bottom + 3, left: rect.left, width: rect.width })
-    }
     onWaypointsChange(waypoints.map(w => w.id === id ? { ...w, name: value, lat: null, lng: null } : w))
     if (!value) { setSuggestions(s => ({ ...s, [id]: [] })); return }
     debounceAutocomplete(value, null, null, r => setSuggestions(s => ({ ...s, [id]: r })))
@@ -106,7 +98,17 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
                 value={wp.name}
                 onChange={e => handleInput(wp.id, e.target.value)}
                 onFocus={() => handleFocus(wp.id)}
-                onBlur={() => setTimeout(() => { setActiveInput(null) }, 180)}
+                onBlur={() => {
+                  const blurredId = wp.id
+                  const blurredEl = inputRefs.current[wp.id]
+                  setTimeout(() => {
+                    // Only clear if: (1) still showing this input's dropdown AND
+                    // (2) focus has truly left (not a spurious blur from mobile keyboard open)
+                    if (document.activeElement !== blurredEl) {
+                      setActiveInput(prev => prev === blurredId ? null : prev)
+                    }
+                  }, 200)
+                }}
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck={false}
