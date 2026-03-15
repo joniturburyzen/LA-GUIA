@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocalStorage } from '../utils/useLocalStorage.js'
 import EntryForm from './EntryForm.jsx'
+import PixelButton from './PixelButton.jsx'
 
 function NavIcon() {
   return (
@@ -162,9 +163,9 @@ export default function NotebookScreen({ onClose, onNavigate }) {
 
         {/* Footer */}
         <div className="nb-footer">
-          <button className="nb-add-btn" onClick={() => setShowForm(true)}>
+          <PixelButton className="nb-add-btn" onClick={() => setShowForm(true)}>
             ＋ Añadir entrada
-          </button>
+          </PixelButton>
         </div>
       </div>
     </div>

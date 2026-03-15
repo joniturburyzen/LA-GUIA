@@ -57,7 +57,7 @@ export default {
 
       // ─── Calcular ruta con paradas intermedias ───────────────────────────────
       if (path === '/directions') {
-        const { origin, destination, waypoints } = body
+        const { origin, destination, waypoints, mode } = body
         if (!origin || !destination) return json({ error: 'origin and destination required' }, 400)
 
         const params = {
@@ -68,6 +68,7 @@ export default {
           units: 'metric',
           alternatives: 'false',
         }
+        if (mode) params.mode = mode
         if (waypoints?.length) {
           params.waypoints = waypoints.join('|')
         }

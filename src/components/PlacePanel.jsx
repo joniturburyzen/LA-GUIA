@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { workerPost } from '../services/api.js'
+import PixelButton from './PixelButton.jsx'
 
 const PRICE = ['', '€', '€€', '€€€', '€€€€']
 
@@ -137,12 +138,12 @@ export default function PlacePanel({ poi, onClose, onNavigate }) {
 
         {/* Navigate button */}
         <div className="place-panel-footer">
-          <button className="place-nav-btn" onClick={() => { onClose(); onNavigate(poi) }}>
+          <PixelButton className="place-nav-btn" onClick={() => { onClose(); onNavigate(poi) }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
               <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
             </svg>
             Navegar aquí
-          </button>
+          </PixelButton>
         </div>
       </div>
     </div>

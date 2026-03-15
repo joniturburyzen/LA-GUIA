@@ -1,27 +1,181 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Background -->
-  <rect width="512" height="512" rx="96" fill="#0d1117"/>
+  <defs>
+    <!-- Glow para el borde del globo, igual que la LoadingScreen -->
+    <filter id="glow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softglow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Clip al círculo del globo -->
+    <clipPath id="globe-clip">
+      <circle cx="256" cy="256" r="246"/>
+    </clipPath>
+  </defs>
 
-  <!-- Globe ring -->
-  <circle cx="256" cy="290" r="165" fill="none" stroke="#58a6ff" stroke-width="9" opacity="0.55"/>
+  <!-- Océano: fondo del globo sin cuadrado -->
+  <circle cx="256" cy="256" r="246" fill="#000814"/>
 
-  <!-- Latitude lines -->
-  <ellipse cx="256" cy="290" rx="165" ry="54"  fill="none" stroke="#58a6ff" stroke-width="3.5" opacity="0.28"/>
-  <ellipse cx="256" cy="242" rx="140" ry="46"  fill="none" stroke="#58a6ff" stroke-width="3"   opacity="0.20"/>
-  <ellipse cx="256" cy="338" rx="140" ry="46"  fill="none" stroke="#58a6ff" stroke-width="3"   opacity="0.20"/>
+  <!-- ── Gratícula: meridianos ─────────────────────────────── -->
+  <g clip-path="url(#globe-clip)" fill="none" stroke="#58a6ff">
+    <!-- Meridiano central vertical -->
+    <line x1="256" y1="10" x2="256" y2="502" stroke-width="1" opacity="0.18"/>
+    <!-- Meridianos curvos ±30° -->
+    <path d="M256,10 Q314,133 314,256 Q314,379 256,502" stroke-width="1" opacity="0.15"/>
+    <path d="M256,10 Q198,133 198,256 Q198,379 256,502" stroke-width="1" opacity="0.15"/>
+    <!-- Meridianos curvos ±60° -->
+    <path d="M256,10 Q388,90 410,256 Q388,422 256,502" stroke-width="1" opacity="0.11"/>
+    <path d="M256,10 Q124,90 102,256 Q124,422 256,502" stroke-width="1" opacity="0.11"/>
+    <!-- Meridianos ±85° (casi tangentes) -->
+    <path d="M256,10 Q446,80 490,256 Q446,432 256,502" stroke-width="0.8" opacity="0.07"/>
+    <path d="M256,10 Q66,80 22,256 Q66,432 256,502"   stroke-width="0.8" opacity="0.07"/>
+  </g>
 
-  <!-- Longitude arcs -->
-  <path d="M256,125 Q302,207 302,290 Q302,373 256,455" fill="none" stroke="#58a6ff" stroke-width="3" opacity="0.22"/>
-  <path d="M256,125 Q210,207 210,290 Q210,373 256,455" fill="none" stroke="#58a6ff" stroke-width="3" opacity="0.22"/>
-  <line x1="256" y1="125" x2="256" y2="455" stroke="#58a6ff" stroke-width="2.5" opacity="0.18"/>
+  <!-- ── Gratícula: paralelos ──────────────────────────────── -->
+  <g clip-path="url(#globe-clip)" fill="none" stroke="#58a6ff">
+    <!-- Ecuador -->
+    <ellipse cx="256" cy="256" rx="246" ry="60"  stroke-width="1.2" opacity="0.22"/>
+    <!-- ±23.5° trópicos -->
+    <ellipse cx="256" cy="214" rx="225" ry="55"  stroke-width="0.9" opacity="0.16"/>
+    <ellipse cx="256" cy="298" rx="225" ry="55"  stroke-width="0.9" opacity="0.16"/>
+    <!-- ±45° -->
+    <ellipse cx="256" cy="172" rx="174" ry="43"  stroke-width="0.8" opacity="0.13"/>
+    <ellipse cx="256" cy="340" rx="174" ry="43"  stroke-width="0.8" opacity="0.13"/>
+    <!-- ±66.5° polares -->
+    <ellipse cx="256" cy="130" rx="99"  ry="24"  stroke-width="0.7" opacity="0.10"/>
+    <ellipse cx="256" cy="382" rx="99"  ry="24"  stroke-width="0.7" opacity="0.10"/>
+  </g>
 
-  <!-- Pin body -->
-  <circle cx="256" cy="148" r="54" fill="#58a6ff"/>
-  <circle cx="256" cy="148" r="23" fill="#0d1117"/>
+  <!-- ── Masas de tierra — vista centrada Atlántico ─────────── -->
+  <g clip-path="url(#globe-clip)">
 
-  <!-- Pin tail -->
-  <path d="M224,186 Q256,262 256,262 Q256,262 288,186 Q270,202 256,202 Q242,202 224,186Z" fill="#58a6ff"/>
+    <!-- América del Norte -->
+    <path d="
+      M 96,88  Q 128,72  165,78  Q 200,82  222,102
+      Q 248,124 242,158 Q 236,188 218,210
+      Q 196,232 170,242 Q 148,250 128,238
+      Q 108,224  94,200 Q 80,172  82,144
+      Q 84,112  96,88 Z"
+      fill="#58a6ff" fill-opacity="0.16"
+      stroke="#58a6ff" stroke-width="1.8" stroke-opacity="0.55"/>
 
-  <!-- Shadow under pin -->
-  <ellipse cx="256" cy="268" rx="18" ry="6" fill="#58a6ff" opacity="0.28"/>
+    <!-- América Central / Méjico -->
+    <path d="
+      M 170,242 Q 190,240 206,252
+      Q 216,264 208,282 Q 196,296 180,300
+      Q 164,300 158,284 Q 154,268 162,256
+      Q 166,248 170,242 Z"
+      fill="#58a6ff" fill-opacity="0.16"
+      stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.5"/>
+
+    <!-- América del Sur -->
+    <path d="
+      M 168,312 Q 196,300 216,316
+      Q 232,334 228,366 Q 222,400 208,428
+      Q 192,454 172,458 Q 150,456 138,434
+      Q 124,408 128,374 Q 130,340 148,320
+      Q 156,312 168,312 Z"
+      fill="#58a6ff" fill-opacity="0.16"
+      stroke="#58a6ff" stroke-width="1.8" stroke-opacity="0.55"/>
+
+    <!-- Europa occidental -->
+    <path d="
+      M 256,100 Q 280,90  308,98  Q 328,108 326,132
+      Q 320,152 300,162 Q 278,170 258,162
+      Q 244,152 246,132 Q 248,112 256,100 Z"
+      fill="#58a6ff" fill-opacity="0.16"
+      stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.55"/>
+
+    <!-- Escandinavia + Islandia (puntito) -->
+    <path d="
+      M 274,68 Q 290,62 306,70 Q 316,80 308,96
+      Q 296,104 280,100 Q 268,92 272,78 Z"
+      fill="#58a6ff" fill-opacity="0.14"
+      stroke="#58a6ff" stroke-width="1.2" stroke-opacity="0.45"/>
+    <circle cx="210" cy="102" r="7" fill="#58a6ff" fill-opacity="0.4" stroke="#58a6ff" stroke-width="1" stroke-opacity="0.5"/>
+
+    <!-- África -->
+    <path d="
+      M 268,174 Q 308,162 338,182
+      Q 362,202 358,244 Q 352,284 336,320
+      Q 316,360 290,382 Q 266,396 244,382
+      Q 222,364 218,328 Q 214,288 228,250
+      Q 240,216 256,192 Q 262,180 268,174 Z"
+      fill="#58a6ff" fill-opacity="0.16"
+      stroke="#58a6ff" stroke-width="1.8" stroke-opacity="0.55"/>
+
+    <!-- Oriente Medio / Arabia -->
+    <path d="
+      M 340,160 Q 368,150 390,165
+      Q 406,180 400,208 Q 390,228 368,232
+      Q 348,234 338,218 Q 330,200 334,180
+      Q 336,166 340,160 Z"
+      fill="#58a6ff" fill-opacity="0.13"
+      stroke="#58a6ff" stroke-width="1.3" stroke-opacity="0.45"/>
+
+    <!-- Asia (visible por el borde derecho) -->
+    <path d="
+      M 394,82  Q 432,72  464,92
+      Q 490,114 490,148 Q 488,182 464,202
+      Q 440,220 410,220 Q 380,218 364,198
+      Q 350,178 356,150 Q 362,118 382,98
+      Q 388,88  394,82 Z"
+      fill="#58a6ff" fill-opacity="0.14"
+      stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.48"/>
+
+    <!-- India -->
+    <path d="
+      M 378,240 Q 400,232 416,248
+      Q 424,266 416,292 Q 404,316 386,324
+      Q 370,324 362,306 Q 356,284 364,262
+      Q 370,246 378,240 Z"
+      fill="#58a6ff" fill-opacity="0.13"
+      stroke="#58a6ff" stroke-width="1.3" stroke-opacity="0.45"/>
+
+    <!-- Groenlandia -->
+    <path d="
+      M 128,36 Q 162,24 192,38 Q 210,52 204,76
+      Q 194,96 170,100 Q 144,100 130,82
+      Q 118,64 128,36 Z"
+      fill="#58a6ff" fill-opacity="0.18"
+      stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.5"/>
+
+    <!-- Antártida (borde inferior) -->
+    <path d="
+      M 50,460 Q 140,440 256,444 Q 372,440 462,460
+      Q 490,480 490,502 L 22,502 Q 22,480 50,460 Z"
+      fill="#58a6ff" fill-opacity="0.14"
+      stroke="#58a6ff" stroke-width="1.2" stroke-opacity="0.4"/>
+
+    <!-- Islas Canarias / Azores (puntitos) -->
+    <circle cx="232" cy="186" r="4" fill="#58a6ff" fill-opacity="0.55"/>
+    <circle cx="222" cy="196" r="3" fill="#58a6ff" fill-opacity="0.45"/>
+    <!-- Cuba -->
+    <ellipse cx="148" cy="272" cx="148" cy="272" rx="16" ry="7" fill="#58a6ff" fill-opacity="0.4" stroke="#58a6ff" stroke-width="1" stroke-opacity="0.5"/>
+    <!-- Madagascar -->
+    <ellipse cx="374" cy="346" rx="10" ry="22" fill="#58a6ff" fill-opacity="0.4" stroke="#58a6ff" stroke-width="1" stroke-opacity="0.5"/>
+  </g>
+
+  <!-- ── Borde del globo con glow (igual que LoadingScreen) ─── -->
+  <circle cx="256" cy="256" r="246"
+    fill="none"
+    stroke="#58a6ff"
+    stroke-width="2.5"
+    opacity="0.75"
+    filter="url(#glow)"/>
+
+  <!-- Borde fino sólido encima -->
+  <circle cx="256" cy="256" r="246"
+    fill="none"
+    stroke="#58a6ff"
+    stroke-width="1.5"
+    opacity="0.9"/>
 </svg>

@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { debounceAutocomplete, getPlaceCoords } from '../services/geocoding.js'
 import { formatDistance, formatDuration } from '../services/routing.js'
+import PixelButton from './PixelButton.jsx'
 
 const DOT_COLORS = { start: '#3fb950', stop: '#e3b341', end: '#f85149' }
 const PLACEHOLDERS = { start: 'Ciudad de salida...', end: 'Destino final...', stop: 'Parada intermedia...' }
@@ -179,9 +180,9 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
         </div>
       )}
 
-      <button className="generate-btn" disabled={!canGenerate || isCalculating} onClick={onGenerate}>
+      <PixelButton className="generate-btn" disabled={!canGenerate || isCalculating} onClick={onGenerate}>
         {isCalculating ? 'Calculando...' : 'Generar ruta →'}
-      </button>
+      </PixelButton>
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import MapPicker from './MapPicker.jsx'
 import { workerPost } from '../services/api.js'
+import PixelButton from './PixelButton.jsx'
 
 // Compress image to max 900px JPEG 0.75 before storing in localStorage
 function compressImage(dataURL) {
@@ -154,9 +155,9 @@ export default function EntryForm({ onClose, onAdd }) {
         </div>
 
         <div className="ef-footer">
-          <button className="place-nav-btn" onClick={handleAdd}>
+          <PixelButton className="place-nav-btn" onClick={handleAdd}>
             ＋ Añadir entrada
-          </button>
+          </PixelButton>
         </div>
       </div>
 

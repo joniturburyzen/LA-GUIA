@@ -1,4 +1,4 @@
-const CACHE = 'la-guia-v1'
+const CACHE = 'la-guia-__BUILD_ID__'
 
 const PRECACHE = [
   '/LA-GUIA/',
