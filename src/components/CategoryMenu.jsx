@@ -23,21 +23,20 @@ export default function CategoryMenu({ active, onSelect }) {
     const el = containerRef.current
     if (!el) return
 
-    // ── Wheel (desktop + trackpad) ──────────────────────────
+    // ── Wheel (desktop + trackpad) — horizontal preferred ───
     const onWheel = e => {
       e.preventDefault()
-      rawRot.set(rawRot.get() - e.deltaY * 0.3)
+      rawRot.set(rawRot.get() - (e.deltaX + e.deltaY) * 0.3)
     }
 
-    // ── Touch scroll (mobile) ───────────────────────────────
-    let lastY = 0
-    const onTouchStart = e => { lastY = e.touches[0].clientY }
+    // ── Touch scroll (mobile) — horizontal swipe ────────────
+    let lastX = 0
+    const onTouchStart = e => { lastX = e.touches[0].clientX }
     const onTouchMove  = e => {
       e.preventDefault()
-      const dy = e.touches[0].clientY - lastY
-      lastY = e.touches[0].clientY
-      // swipe-up (dy < 0) → same direction as scroll-down → decrease rotation
-      rawRot.set(rawRot.get() + dy * 0.55)
+      const dx = e.touches[0].clientX - lastX
+      lastX = e.touches[0].clientX
+      rawRot.set(rawRot.get() + dx * 0.55)
     }
 
     el.addEventListener('wheel',      onWheel,      { passive: false })
@@ -67,7 +66,7 @@ export default function CategoryMenu({ active, onSelect }) {
         marginBottom: 14,
         textTransform: 'uppercase',
       }}>
-        ↕ Scroll para girar · Toca para seleccionar
+        ↔ Desliza para girar · Toca para seleccionar
       </div>
 
       {/* 3D carousel — centered, rotates in place */}
@@ -81,7 +80,7 @@ export default function CategoryMenu({ active, onSelect }) {
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',
-          cursor: 'ns-resize',
+          cursor: 'ew-resize',
           touchAction: 'none',
           // Side fade: hides edges of other faces
           WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',

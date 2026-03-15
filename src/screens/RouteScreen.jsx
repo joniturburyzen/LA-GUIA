@@ -9,7 +9,7 @@ import { getWeatherForWaypoints } from '../services/weather.js'
 
 const DOT_COLORS = { start: '#3fb950', stop: '#e3b341', end: '#f85149' }
 
-export default function RouteScreen({ data, onBack }) {
+export default function RouteScreen({ data, onBack, onNavigate }) {
   const [mapExpanded,    setMapExpanded]    = useState(false)
   const [activeCategory, setActiveCategory] = useState(null)
   const [pois,           setPois]           = useState([])
@@ -156,6 +156,7 @@ export default function RouteScreen({ data, onBack }) {
             pois={pois}
             spotifyData={spotifyData}
             isLoading={isLoadingPois}
+            onNavigate={onNavigate}
           />
         )}
 
