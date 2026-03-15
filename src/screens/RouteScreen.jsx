@@ -64,8 +64,8 @@ export default function RouteScreen({ data, onBack, onNavigate }) {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
-            background: 'linear-gradient(135deg, #161b22, #1a2030)',
-            border: '1px solid #30363d',
+            background: 'linear-gradient(135deg, #0e1c3e, #121e44)',
+            border: '1px solid rgba(88,166,255,0.16)',
             borderRadius: 12,
             overflow: 'hidden',
             marginBottom: 10,
@@ -78,7 +78,7 @@ export default function RouteScreen({ data, onBack, onNavigate }) {
               <div key={i} style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 padding: '10px 6px',
-                borderRight: i < 2 ? '1px solid #30363d' : 'none',
+                borderRight: i < 2 ? '1px solid rgba(88,166,255,0.12)' : 'none',
               }}>
                 <span style={{ fontSize: '1.05rem', fontWeight: 800, color: stat.color, letterSpacing: '-0.02em' }}>
                   {stat.value}
@@ -101,8 +101,8 @@ export default function RouteScreen({ data, onBack, onNavigate }) {
                     {/* Stop card */}
                     <div style={{
                       display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
-                      background: '#161b22',
-                      border: `1px solid ${DOT_COLORS[wp.type] || DOT_COLORS.stop}44`,
+                      background: '#0e1c3e',
+                      border: `1px solid ${DOT_COLORS[wp.type] || DOT_COLORS.stop}55`,
                       borderRadius: 10,
                       padding: '7px 10px',
                       minWidth: 80, maxWidth: 100,
@@ -132,7 +132,7 @@ export default function RouteScreen({ data, onBack, onNavigate }) {
                     {seg && i < valid.length - 1 && (
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 4px', minWidth: 70 }}>
                         <span style={{ fontSize: '0.62rem', color: '#58a6ff', fontWeight: 600, whiteSpace: 'nowrap' }}>{seg.distanceText}</span>
-                        <div style={{ width: '100%', height: 1, background: 'linear-gradient(to right, #30363d 60%, transparent)', margin: '3px 0' }} />
+                        <div style={{ width: '100%', height: 1, background: 'linear-gradient(to right, rgba(88,166,255,0.22) 60%, transparent)', margin: '3px 0' }} />
                         <span style={{ fontSize: '0.6rem', color: '#8b949e', whiteSpace: 'nowrap' }}>{seg.durationText}</span>
                       </div>
                     )}

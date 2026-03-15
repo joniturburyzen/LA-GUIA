@@ -56,8 +56,8 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
       left:     dropPos.left,
       width:    dropPos.width,
       zIndex:   99999,
-      background: '#21262d',
-      border: '1px solid #58a6ff44',
+      background: '#0e1c3e',
+      border: '1px solid rgba(88,166,255,0.28)',
       borderRadius: 10,
       boxShadow: '0 12px 40px rgba(0,0,0,0.8)',
       overflow: 'hidden',
@@ -69,8 +69,8 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
           key={s.placeId}
           onMouseDown={() => handleSelect(activeInput, s)}
           onTouchStart={() => handleSelect(activeInput, s)}
-          style={{ padding: '10px 14px', borderBottom: '1px solid #30363d', cursor: 'pointer' }}
-          onMouseOver={e => e.currentTarget.style.background = '#30363d'}
+          style={{ padding: '10px 14px', borderBottom: '1px solid rgba(88,166,255,0.1)', cursor: 'pointer' }}
+          onMouseOver={e => e.currentTarget.style.background = 'rgba(88,166,255,0.1)'}
           onMouseOut={e  => e.currentTarget.style.background = 'transparent'}
         >
           <div style={{ fontSize: '0.875rem', color: '#e6edf3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.main}</div>
@@ -146,10 +146,10 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
                 </div>
                 {seg && i < arr.length - 1 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 3, margin: '2px 0' }}>
-                    <div style={{ width: 2, height: 24, background: 'repeating-linear-gradient(to bottom, #30363d 0, #30363d 3px, transparent 3px, transparent 6px)', flexShrink: 0 }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#21262d', borderRadius: 6, padding: '3px 8px', flex: 1 }}>
+                    <div style={{ width: 2, height: 24, background: 'repeating-linear-gradient(to bottom, rgba(88,166,255,0.25) 0, rgba(88,166,255,0.25) 3px, transparent 3px, transparent 6px)', flexShrink: 0 }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(10,20,50,0.9)', borderRadius: 6, padding: '3px 8px', flex: 1 }}>
                       <span style={{ fontSize: '0.68rem', color: '#58a6ff', fontWeight: 600 }}>{seg.distanceText}</span>
-                      <span style={{ fontSize: '0.62rem', color: '#30363d' }}>·</span>
+                      <span style={{ fontSize: '0.62rem', color: 'rgba(88,166,255,0.3)' }}>·</span>
                       <span style={{ fontSize: '0.68rem', color: '#8b949e' }}>{seg.durationText}</span>
                     </div>
                   </div>
@@ -162,8 +162,8 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
             <div style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               marginTop: 4, padding: '5px 8px',
-              background: 'linear-gradient(135deg, #21262d, #161b22)',
-              borderRadius: 7, border: '1px solid #30363d',
+              background: 'linear-gradient(135deg, #0e1c3e, #121e46)',
+              borderRadius: 7, border: '1px solid rgba(88,166,255,0.16)',
             }}>
               <span style={{ fontSize: '0.72rem', color: '#8b949e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Total</span>
               <span style={{ fontSize: '0.78rem', color: '#3fb950', fontWeight: 700 }}>
