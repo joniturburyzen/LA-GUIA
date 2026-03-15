@@ -1,0 +1,48 @@
+const CACHE = 'la-guia-v1'
+
+const PRECACHE = [
+  '/LA-GUIA/',
+  '/LA-GUIA/index.html',
+]
+
+// Skip caching external APIs and CDNs
+const SKIP = [
+  'workers.dev',
+  'googleapis.com',
+  'openmeteo.com',
+  'open-meteo.com',
+  'githubusercontent.com',
+  'tile.openstreetmap',
+  'basemaps.cartocdn',
+]
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
+  )
+})
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  )
+})
+
+self.addEventListener('fetch', e => {
+  const url = e.request.url
+  if (SKIP.some(s => url.includes(s))) return // network-only for APIs/tiles
+
+  e.respondWith(
+    fetch(e.request)
+      .then(res => {
+        if (res.ok && e.request.method === 'GET') {
+          const clone = res.clone()
+          caches.open(CACHE).then(c => c.put(e.request, clone))
+        }
+        return res
+      })
+      .catch(() => caches.match(e.request))
+  )
+})

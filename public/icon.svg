@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#0d1117"/>
+
+  <!-- Globe ring -->
+  <circle cx="256" cy="290" r="165" fill="none" stroke="#58a6ff" stroke-width="9" opacity="0.55"/>
+
+  <!-- Latitude lines -->
+  <ellipse cx="256" cy="290" rx="165" ry="54"  fill="none" stroke="#58a6ff" stroke-width="3.5" opacity="0.28"/>
+  <ellipse cx="256" cy="242" rx="140" ry="46"  fill="none" stroke="#58a6ff" stroke-width="3"   opacity="0.20"/>
+  <ellipse cx="256" cy="338" rx="140" ry="46"  fill="none" stroke="#58a6ff" stroke-width="3"   opacity="0.20"/>
+
+  <!-- Longitude arcs -->
+  <path d="M256,125 Q302,207 302,290 Q302,373 256,455" fill="none" stroke="#58a6ff" stroke-width="3" opacity="0.22"/>
+  <path d="M256,125 Q210,207 210,290 Q210,373 256,455" fill="none" stroke="#58a6ff" stroke-width="3" opacity="0.22"/>
+  <line x1="256" y1="125" x2="256" y2="455" stroke="#58a6ff" stroke-width="2.5" opacity="0.18"/>
+
+  <!-- Pin body -->
+  <circle cx="256" cy="148" r="54" fill="#58a6ff"/>
+  <circle cx="256" cy="148" r="23" fill="#0d1117"/>
+
+  <!-- Pin tail -->
+  <path d="M224,186 Q256,262 256,262 Q256,262 288,186 Q270,202 256,202 Q242,202 224,186Z" fill="#58a6ff"/>
+
+  <!-- Shadow under pin -->
+  <ellipse cx="256" cy="268" rx="18" ry="6" fill="#58a6ff" opacity="0.28"/>
+</svg>
