@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { debounceAutocomplete, getPlaceCoords } from '../services/geocoding.js'
 import { formatDistance, formatDuration } from '../services/routing.js'
@@ -10,6 +10,28 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
   const [suggestions, setSuggestions] = useState({})
   const [activeInput, setActiveInput] = useState(null)
   const inputRefs = useRef({})
+  const [dropPos, setDropPos] = useState(null)
+
+  // Recalculate dropdown position after every commit + when visual viewport changes
+  // (mobile keyboard open/close shifts the visual viewport vs layout viewport)
+  useLayoutEffect(() => {
+    function calc() {
+      if (!activeInput) { setDropPos(null); return }
+      const el = inputRefs.current[activeInput]
+      if (!el) { setDropPos(null); return }
+      const rect = el.getBoundingClientRect()
+      const vvTop  = window.visualViewport?.offsetTop  ?? 0
+      const vvLeft = window.visualViewport?.offsetLeft ?? 0
+      setDropPos({ top: rect.bottom - vvTop + 3, left: rect.left - vvLeft, width: rect.width })
+    }
+    calc()
+    window.visualViewport?.addEventListener('resize', calc)
+    window.visualViewport?.addEventListener('scroll', calc)
+    return () => {
+      window.visualViewport?.removeEventListener('resize', calc)
+      window.visualViewport?.removeEventListener('scroll', calc)
+    }
+  }, [activeInput])
 
   const canGenerate = waypoints.filter(w => w.lat && w.lng).length >= 2
 
@@ -40,11 +62,7 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
 
   const removeStop = id => onWaypointsChange(waypoints.filter(w => w.id !== id))
 
-  // ── Dropdown: position calculated live from the DOM ref — never stale ──
   const activeSugs = activeInput ? (suggestions[activeInput] || []) : []
-  const activeEl   = activeInput ? inputRefs.current[activeInput] : null
-  const dropRect   = activeEl ? activeEl.getBoundingClientRect() : null
-  const dropPos    = dropRect ? { top: dropRect.bottom + 3, left: dropRect.left, width: dropRect.width } : null
 
   const dropdown = activeSugs.length > 0 && dropPos ? createPortal(
     <div style={{
