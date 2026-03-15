@@ -15,6 +15,14 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
   const canGenerate = waypoints.filter(w => w.lat && w.lng).length >= 2
 
   const handleInput = useCallback((id, value) => {
+    // Re-assert active input + position on every keystroke (fixes first-type bug on mobile
+    // where keyboard open triggers blur/focus cycle that clears activeInput before suggestions arrive)
+    setActiveInput(id)
+    const el = inputRefs.current[id]
+    if (el) {
+      const rect = el.getBoundingClientRect()
+      setDropPos({ top: rect.bottom + 3, left: rect.left, width: rect.width })
+    }
     onWaypointsChange(waypoints.map(w => w.id === id ? { ...w, name: value, lat: null, lng: null } : w))
     if (!value) { setSuggestions(s => ({ ...s, [id]: [] })); return }
     debounceAutocomplete(value, null, null, r => setSuggestions(s => ({ ...s, [id]: r })))

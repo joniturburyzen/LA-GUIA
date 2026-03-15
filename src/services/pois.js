@@ -8,13 +8,14 @@ export const CATEGORY_CONFIG = {
   parking:      { type: 'parking',            radius: 2000,  icon: '🅿', color: '#22c55e', label: 'Parking' },
 }
 
-export async function fetchPOIs(category, polyline, destWaypoint) {
+export async function fetchPOIs(category, polyline, waypoints) {
   const cfg = CATEGORY_CONFIG[category]
   if (!cfg) return []
 
-  // Parking: only near destination. Others: distributed along route.
+  // Parking: near every actual stop (each stop needs parking).
+  // Others: evenly distributed sample along the polyline.
   const points = category === 'parking'
-    ? [destWaypoint]
+    ? waypoints.map(w => ({ lat: w.lat, lng: w.lng }))
     : samplePolyline(polyline, category === 'gasolineras' ? 8 : 5)
 
   const data = await workerPost('/places/route', {

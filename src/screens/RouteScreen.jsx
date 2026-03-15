@@ -32,7 +32,7 @@ export default function RouteScreen({ data, onBack, onNavigate }) {
   useEffect(() => {
     if (!activeCategory || activeCategory === 'spotify') { setPois([]); return }
     setIsLoadingPois(true); setPois([])
-    fetchPOIs(activeCategory, polyline, dest)
+    fetchPOIs(activeCategory, polyline, valid)
       .then(setPois).catch(() => setPois([])).finally(() => setIsLoadingPois(false))
   }, [activeCategory])
 
