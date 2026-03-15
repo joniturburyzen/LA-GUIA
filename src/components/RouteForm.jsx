@@ -8,8 +8,7 @@ const PLACEHOLDERS = { start: 'Ciudad de salida...', end: 'Destino final...', st
 
 export default function RouteForm({ waypoints, onWaypointsChange, segments, totalDistance, totalDuration, isCalculating, onGenerate }) {
   const [suggestions, setSuggestions] = useState({})
-  const [activeInput, setActiveInput]  = useState(null)
-  const [dropPos,     setDropPos]      = useState(null)
+  const [activeInput, setActiveInput] = useState(null)
   const inputRefs = useRef({})
 
   const canGenerate = waypoints.filter(w => w.lat && w.lng).length >= 2
@@ -21,11 +20,6 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
   }, [waypoints, onWaypointsChange])
 
   const handleFocus = useCallback((id) => {
-    const el = inputRefs.current[id]
-    if (el) {
-      const rect = el.getBoundingClientRect()
-      setDropPos({ top: rect.bottom + 3, left: rect.left, width: rect.width })
-    }
     setActiveInput(id)
   }, [])
 
@@ -46,15 +40,19 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
 
   const removeStop = id => onWaypointsChange(waypoints.filter(w => w.id !== id))
 
-  // Dropdown rendered via portal — always on top regardless of z-index/overflow
+  // ── Dropdown: position calculated live from the DOM ref — never stale ──
   const activeSugs = activeInput ? (suggestions[activeInput] || []) : []
+  const activeEl   = activeInput ? inputRefs.current[activeInput] : null
+  const dropRect   = activeEl ? activeEl.getBoundingClientRect() : null
+  const dropPos    = dropRect ? { top: dropRect.bottom + 3, left: dropRect.left, width: dropRect.width } : null
+
   const dropdown = activeSugs.length > 0 && dropPos ? createPortal(
     <div style={{
       position: 'fixed',
-      top: dropPos.top,
-      left: dropPos.left,
-      width: dropPos.width,
-      zIndex: 99999,
+      top:      dropPos.top,
+      left:     dropPos.left,
+      width:    dropPos.width,
+      zIndex:   99999,
       background: '#21262d',
       border: '1px solid #58a6ff44',
       borderRadius: 10,
@@ -102,8 +100,8 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
                   const blurredId = wp.id
                   const blurredEl = inputRefs.current[wp.id]
                   setTimeout(() => {
-                    // Only clear if: (1) still showing this input's dropdown AND
-                    // (2) focus has truly left (not a spurious blur from mobile keyboard open)
+                    // Only clear if focus truly left (not spurious mobile keyboard blur)
+                    // and if this input is still the one shown in the dropdown
                     if (document.activeElement !== blurredEl) {
                       setActiveInput(prev => prev === blurredId ? null : prev)
                     }
@@ -133,7 +131,6 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
             const seg = segments[i]
             return (
               <div key={wp.id}>
-                {/* Stop dot + name */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{
                     width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
@@ -144,7 +141,6 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
                     {wp.name?.split(',')[0] || '—'}
                   </span>
                 </div>
-                {/* Segment connector */}
                 {seg && i < arr.length - 1 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 3, margin: '2px 0' }}>
                     <div style={{ width: 2, height: 24, background: 'repeating-linear-gradient(to bottom, #30363d 0, #30363d 3px, transparent 3px, transparent 6px)', flexShrink: 0 }} />
@@ -159,14 +155,12 @@ export default function RouteForm({ waypoints, onWaypointsChange, segments, tota
             )
           })}
 
-          {/* Total */}
           {totalDistance > 0 && (
             <div style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               marginTop: 4, padding: '5px 8px',
               background: 'linear-gradient(135deg, #21262d, #161b22)',
-              borderRadius: 7,
-              border: '1px solid #30363d',
+              borderRadius: 7, border: '1px solid #30363d',
             }}>
               <span style={{ fontSize: '0.72rem', color: '#8b949e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Total</span>
               <span style={{ fontSize: '0.78rem', color: '#3fb950', fontWeight: 700 }}>
